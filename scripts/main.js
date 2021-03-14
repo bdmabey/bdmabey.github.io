@@ -56,7 +56,7 @@ function buyMine() {
 
 function idleGold() {
     gold = gold + mineLevel;
-    document.getElementById("gold").innerHTML = gold + " Gold."
+    document.getElementById("gold").innerHTML = gold + " Gold"
 }
 
 window.setInterval(function() {
