@@ -4,6 +4,8 @@ var goldIdle = {
     clickers : 1,
     mineCost : 110,
     mineLevel : 0,
+    mineUpgrade : 0,
+    mineUpgradeCost : 500,
     goldPerSecond : 0
 };
 
@@ -14,32 +16,39 @@ var clickers = goldIdle.clickers
 var clickCost = Math.floor(10 * Math.pow(1.1, clickers) + 20)
 var mineCost = goldIdle.mineCost
 var mineLevel = goldIdle.mineLevel
+var mineUpgrade = goldIdle.mineUpgrade
+var mineUpgradeCost = goldIdle.mineUpgradeCost
 
-displayData("buyClicker", clickCost, null, null);
-displayData("goldMines", mineLevel, null, null)
-displayData("mineCost", mineCost, null, null)
-displayData("goldPerSecond", goldPerSecond, null, null)
-displayData("clickers", clickers, null, null)
+displayData("buyClicker", clickCost);
+displayData("goldMines", mineLevel)
+displayData("mineCost", mineCost)
+displayData("goldPerSecond", goldPerSecond)
+displayData("clickers", clickers)
+displayData("mineUpgrade", mineUpgrade)
+displayData("mineUpgradeCost", mineUpgradeCost)
 
-function displayData(id, value, preText, postText) {
+clickCost = Math.floor(10 * Math.pow(1.1, clickers) + 20)
+mineCost = Math.floor(10 * Math.pow(1.3, mineLevel) + 100)
+mineUpgradeCost = Math.floor(Math.pow(1.5, mineUpgrade) + 500)
+
+function displayData(id, value, preText = null, postText = null) {
     document.getElementById(id).innerHTML = preText + value + postText;
 }
 
 function clickUpgrade() {
-    clickCost = Math.floor(10 * Math.pow(1.1, clickers) + 20)
     if(gold >= clickCost) {
         clickIncrease += 1
         clickers = clickers + 1;
         gold = gold - clickCost;
         displayData("gold", gold, null, " Gold")
         displayData("goldClick", clickIncrease, "Gain ", " Gold")
-        displayData("clickers", clickers, null, null)
+        displayData("clickers", clickers)
     }
     else {
         alert("Not Enough Gold!")
     }
     var nextCost = Math.floor(10 * Math.pow(1.1, clickers) + 20);
-    displayData("buyClicker", nextCost, null, null)
+    displayData("buyClicker", nextCost)
 }
 
 function goldClick() {
@@ -48,24 +57,32 @@ function goldClick() {
 }
 
 function buyMine() {
-    mineCost = Math.floor(10 * Math.pow(1.3, mineLevel) + 100)
     if(gold >= mineCost) {
         mineLevel += 1;
         gold = gold - mineCost;
-        goldPerSecond = goldPerSecond + 1
-        displayData("goldMines", mineLevel, null, null)
+        displayData("goldMines", mineLevel)
         displayData("gold", gold, null, " Gold")
-        displayData("goldPerSecond", goldPerSecond, null, null)
     }
     else {
         alert("Not Enough Gold!");
     }
     mineCost = Math.floor(10 * Math.pow(1.3, mineLevel) + 100)
-    displayData("mineCost", mineCost, null, null)
+    displayData("mineCost", mineCost)
+}
+
+function upgradeMine() {
+    if(gold >= mineUpgradeCost) {
+        mineUpgrade += 1
+    }
+    else {
+        alert("nah")
+    }
 }
 
 function idleGold() {
-    gold = gold + mineLevel;
+    goldPerSecond = (mineLevel * (2 *(mineUpgrade)))
+    gold = gold + goldPerSecond
+    displayData("goldPerSecond", goldPerSecond)
     displayData("gold", gold, null, " Gold")
 }
 
